@@ -8,6 +8,9 @@
 	<link rel="stylesheet" href="<c:url value='/css/muziek.css'/>"/>
 </head>
 <body>
+	<c:if test="${not empty param.fout}">
+		<div>${param.fout}</div>
+	</c:if>
 	<h1>Albums</h1>
 	<c:if test="${not empty albums}">
 		<ul>
