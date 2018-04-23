@@ -1,6 +1,7 @@
 package be.vdab.muziek.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -16,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+
+import org.springframework.format.annotation.NumberFormat;
 
 import be.vdab.muziek.valueobjects.Track;
 
@@ -83,6 +86,11 @@ public class Album implements Serializable {
 		} else if (!naam.equals(other.naam))
 			return false;
 		return true;
+	}
+	
+	@NumberFormat(pattern = "0.00")
+	public BigDecimal getTotaleTijd() {
+		return tracks.stream().map(track -> track.getTijd()).reduce(BigDecimal.ZERO, (vorigeSom, tijd) -> vorigeSom.add(tijd));
 	}
 	
 }
