@@ -1,7 +1,11 @@
 package be.vdab.muziek.services;
 
-import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+
+import be.vdab.muziek.entities.Album;
 
 public interface AlbumService {
-	BigDecimal getTotaleTijd(long id);
+	List<Album> findAll();
+	Optional<Album> read(long id);
 }

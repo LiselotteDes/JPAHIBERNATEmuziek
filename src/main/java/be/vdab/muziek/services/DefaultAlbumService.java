@@ -1,6 +1,6 @@
 package be.vdab.muziek.services;
 
-import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import be.vdab.muziek.entities.Album;
-import be.vdab.muziek.exceptions.AlbumNietGevondenException;
 import be.vdab.muziek.repositories.AlbumRepository;
 
 @Service
@@ -21,13 +20,11 @@ class DefaultAlbumService implements AlbumService {
 	}
 	
 	@Override
-	public BigDecimal getTotaleTijd(long id) {
-		Optional<Album> optionalAlbum = repository.read(id);
-		if (optionalAlbum.isPresent()) {
-			return optionalAlbum.get().getTotaleTijd();
-		}
-		else {
-			throw new AlbumNietGevondenException();
-		}
+	public List<Album> findAll() {
+		return repository.findAll();
+	}
+	@Override
+	public Optional<Album> read(long id) {
+		return repository.read(id);
 	}
 }

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.junit.Test;
@@ -41,6 +42,8 @@ public class JpaAlbumRepositoryTest extends AbstractTransactionalJUnit4SpringCon
 	public void read() {
 		Album album = repository.read(idVanTestAlbum()).get();
 		assertEquals("test", album.getNaam());
+		assertEquals("test", album.getArtiest().getNaam());
+		assertEquals(0, BigDecimal.valueOf(4.60).compareTo(album.getTotaleTijd()));
 	}
 	@Test
 	public void readOnbestaandeDocent() {
