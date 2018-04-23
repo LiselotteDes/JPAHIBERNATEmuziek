@@ -15,7 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OrderBy;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.NumberFormat;
@@ -24,18 +25,20 @@ import be.vdab.muziek.valueobjects.Track;
 
 @Entity
 @Table(name = "albums")
+@NamedEntityGraph(name = Album.MET_ARTIEST, attributeNodes = @NamedAttributeNode("artiest"))
 public class Album implements Serializable {
 	private static final long serialVersionUID = 1L;
+	public static final String MET_ARTIEST = "Album.metArtiest";
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+	private String naam;
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "artiestid")
 	private Artiest artiest;
-	private String naam;
 	@ElementCollection
 	@CollectionTable(name = "tracks", joinColumns = @JoinColumn(name = "albumid"))
-	@OrderBy("naam")
+	/*@OrderBy("naam")*/	// overbodig
 	private Set<Track> tracks = new LinkedHashSet<>();
 	
 	public Album(Artiest artiest, String naam) {
@@ -58,6 +61,12 @@ public class Album implements Serializable {
 		return Collections.unmodifiableSet(tracks);
 	}
 	
+	@NumberFormat(pattern = "0.00")
+	public BigDecimal getTotaleTijd() {
+		return tracks.stream().map(track -> track.getTijd()).reduce(BigDecimal.ZERO, (vorigeSom, tijd) -> vorigeSom.add(tijd));
+	}
+	
+	/* Overbodig:
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -86,11 +95,5 @@ public class Album implements Serializable {
 		} else if (!naam.equals(other.naam))
 			return false;
 		return true;
-	}
-	
-	@NumberFormat(pattern = "0.00")
-	public BigDecimal getTotaleTijd() {
-		return tracks.stream().map(track -> track.getTijd()).reduce(BigDecimal.ZERO, (vorigeSom, tijd) -> vorigeSom.add(tijd));
-	}
-	
+	}*/
 }

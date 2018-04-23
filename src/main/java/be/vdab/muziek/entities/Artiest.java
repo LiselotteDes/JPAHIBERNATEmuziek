@@ -1,16 +1,11 @@
 package be.vdab.muziek.entities;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 @Entity
@@ -21,9 +16,10 @@ public class Artiest implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String naam;
-	@OneToMany(mappedBy = "artiest")
+	// FOUT, overbodig (geen BIdirectionele associatie nodig)
+	/*@OneToMany(mappedBy = "artiest")
 	@OrderBy("naam")
-	private Set<Album> albums = new LinkedHashSet<>();
+	private Set<Album> albums = new LinkedHashSet<>();*/
 	
 	public Artiest(String naam) {
 		this.naam = naam;
@@ -37,9 +33,10 @@ public class Artiest implements Serializable {
 	public String getNaam() {
 		return naam;
 	}
-	public Set<Album> getAlbums() {
+	/*public Set<Album> getAlbums() {
 		return Collections.unmodifiableSet(albums);
-	}
+	}*/
+	/* OVERBODIG:
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -62,5 +59,5 @@ public class Artiest implements Serializable {
 		} else if (!naam.equals(other.naam))
 			return false;
 		return true;
-	}
+	}*/
 }
